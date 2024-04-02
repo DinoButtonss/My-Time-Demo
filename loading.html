@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+   <title>MyTime</title>
+   <link rel="icon" href="cover.png">
+   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.css">
+   <link rel="stylesheet" href="loading.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+   <link rel="stylesheet" href="https://fonts.google.com/specimen/Gaegu?query=JIKJI+SOFT">
+   <link rel='stylesheet' href='https://icono-49d6.kxcdn.com/icono.min.css'>
+   <script src="main.js"></script>
+</head>
+   <body>
+   <div id="yoongi-bg">
+    <video id="background-video" autoplay loop muted poster="yoongi.png">
+      <source src="Sequence 01_1.mp4" type="video/mp4">
+      </video>
+   </div>
+   <div id="pomodoro">
+      <div id="pomodoro-overlay"> 
+      </div>
+      <span class="btn-icon" id="feh-toggle-settings"><i class="fa fa-cog"></i></span>
+         
+      <div id="timer-progress">
+         <svg class="circle-timer" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" class="circle-background"/>
+            <circle cx="50" cy="50" r="45" class="circle-progress" id="circle-progress"/>
+            <text id="feh-timer-time" x="50" y="50" text-anchor="middle" dy=".3em" font-size="18">00:00</text>
+            <text id="feh-timer-pause" x="50" y="68" text-anchor="middle" dy=".3em" font-size="7">Paused</text>
+            <text id="feh-timer-rest" x="50" y="68" text-anchor="middle" dy=".3em" font-size="7">Rest</text>
+         </svg>
+      </div>
+         
+      <div id="feh-timer-sessions">
+         <p id="feh-completed-label">Completed work sessions: </p>
+         <p id="feh-completed-sessions">0</p>
+      </div>
+            
+      <div id="feh-timer-functions">			
+         <div id="feh-timer-settings">
+            <span class="btn-icon" id="feh-close-settings"><i class="fa fa-times"></i></span>
+         
+            <form id="feh-timer-form">
+               <p class="feh-timer-line">
+                  <label for="work-duration">Pomodoro:</label>
+                  <input type="number" id="work-duration" value="25" min="1" max="1000">
+               </p>
+               <p class="feh-timer-line">
+                  <label for="rest-duration">Rest:</label>
+                  <input type="number" id="rest-duration" value="5" min="1" max="1000">
+               </p>
+            </form>
+         </div>
+         <div id="feh-timer-buttons">
+            <button id="pause-btn"><i class="fa fa-pause"></i></button>
+            <button id="start-btn"><i class="fa fa-play"></i></button>
+         </div>
+      </div>
+   </div>
+   <div id="feh-toDo">
+    <h1>To-do</h1>
+
+    <form class="todo-form">
+      <input type="text" class="todo-input" placeholder="Add a To-do...">
+      <button type="submit" class="add-button">Add</button>
+    </form>
+
+    <ul class="todo-items">
+      <!-- dummy item -->
+      <!-- <li class="item" data-key="1594003133171">
+        <input class="checkbox" type="checkmark">
+        work
+        <button class="delete-button">X</button>
+      </li> -->
+    </ul>
+   </div>
+      
+    <button id="homePage" onclick = "window.location.href='practice.html';" >Home</button>
+
+
+    <div id="rainHeader">
+      <h3>Rain!</h3>
+    </div>
+
+
+    <div class="audio-player" style="margin: 0 auto">
+      <div class="timeline">
+        <div class="progress"></div>
+      </div>
+      <div class="controls">
+        <div class="play-container">
+          <div class="toggle-play play">
+        </div>
+        </div>
+        <div class="time">
+          <div class="current">0:00</div>
+          <div class="divider">/</div>
+          <div class="length"></div>
+        </div>
+        <div class="name"></div>
+    <!--     credit for icon to https://saeedalipoor.github.io/icono/ -->
+        <div class="volume-container">
+          <div class="volume-button">
+            <div class="volume icono-volumeMedium"> </div>
+          </div>
+          
+          <div class="volume-slider">
+            <div class="volume-percentage"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="musicHeader">
+      <h3>Music!</h3>
+    </div>
+
+    <div class="audio-player2" style="margin: 0 auto">
+      <div class="timeline2">
+        <div class="progress2"></div>
+      </div>
+      <div class="controls2">
+        <div class="play-container2">
+          <div class="toggle-play2 play2">
+        </div>
+        </div>
+        <div class="time2">
+          <div class="current2">0:00</div>
+          <div class="divider2">/</div>
+          <div class="length2"></div>
+        </div>
+        <div class="name2"></div>
+    <!--     credit for icon to https://saeedalipoor.github.io/icono/ -->
+        <div class="volume-container2">
+          <div class="volume-button2">
+            <div class="volume2 icono-volumeMedium"> </div>
+          </div>
+          
+          <div class="volume-slider2">
+            <div class="volume-percentage2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+            
+      
+    </div>
+   <script>
+    
+
+(function () {
+
+const fehBody = document.body;
+window.addEventListener("load", () => {
+   fehBody.classList.add('page-loaded');
+}); 
+
+})();
+
+ /* dragElement(document.getElementById("feh-pomodoro"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+} 
+*/
+
+
+const workDurationInput = document.getElementById("work-duration");
+const restDurationInput = document.getElementById("rest-duration");
+const timerTime = document.getElementById("feh-timer-time");
+const circleProgress = document.getElementById("circle-progress");
+const fehBody = document.body;
+const completedSessionsElement = document.getElementById("feh-completed-sessions");
+let completedSessions = 0;
+const workFinished = new Audio("end work.mp3");
+const restFinished = new Audio("end break.mp3");
+
+
+let workDuration = parseInt(workDurationInput.value) * 60;
+let restDuration = parseInt(restDurationInput.value) * 60;
+let remainingTime = workDuration;
+let isPaused = true;
+let isWorking = true;
+let intervalId;
+
+const startBtn = document.getElementById("start-btn");
+startBtn.addEventListener("click", () => {
+   isPaused = false;
+
+   fehBody.classList.add('timer-running');
+
+   if (isWorking) {
+      fehBody.classList.remove('timer-paused');
+   }
+   else {
+      fehBody.classList.add('rest-mode');
+      fehBody.classList.remove('timer-paused');
+   }
+
+   if (!intervalId) {
+      intervalId = setInterval(updateTimer, 1000);
+   }
+});
+
+function updateTimer() {
+
+if (!isPaused) {
+   remainingTime--;
+
+   if (remainingTime <= 0) {
+      isWorking = !isWorking;
+      remainingTime = isWorking ? workDuration : restDuration;
+      playAlarm = isWorking ? restFinished : workFinished;
+      playAlarm.play();
+
+      if(!isWorking) {
+         fehBody.classList.add('rest-mode');
+         fehBody.classList.remove('timer-running');
+         completedSessions++;
+            completedSessionsElement.textContent = completedSessions;
+      } 
+      else {
+         fehBody.classList.remove('rest-mode');
+         fehBody.classList.remove('timer-running'); 
+      }
+
+      isPaused = true;
+      fehBody.classList.remove('timer-work-active');
+   }
+
+   updateProgress();
+
+   console.log(remainingTime);
+}
+document.title  = formatTime(remainingTime) + " || MyTime";
+
+}
+
+function updateProgress() {
+   const radius = 45;
+   const circumference = 2 * Math.PI * radius;
+
+   const totalDuration = isWorking ? workDuration : restDuration;
+   const dashOffset = circumference * remainingTime / totalDuration;
+
+   circleProgress.style.strokeDashoffset = dashOffset;
+   timerTime.textContent = formatTime(remainingTime);
+}
+
+function formatTime(seconds) {
+   const minutes = Math.floor(seconds / 60);
+   const remainingSeconds = seconds % 60;
+   return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+}
+
+// Now run this updateProgress function on load
+updateProgress();
+
+const pauseBtn = document.getElementById("pause-btn");
+pauseBtn.addEventListener("click", () => {
+   isPaused = true;
+
+   fehBody.classList.remove('timer-running');
+   fehBody.classList.add('timer-paused');
+
+});
+
+const btnToggleSettings = document.getElementById('feh-toggle-settings');
+const btnCloseSettings = document.getElementById('feh-close-settings');
+	
+function setBodySettings() {
+   fehBody.classList.contains('settings-active') ? fehBody.classList.remove('settings-active') : fehBody.classList.add('settings-active');
+}
+
+function toggleSettings() {
+   if (event.type === 'click') {
+      setBodySettings();
+   }
+   else if((event.type === 'keydown' && event.keyCode === 27)) {
+      fehBody.classList.remove('settings-active');
+   }
+}
+
+btnToggleSettings.addEventListener('click', toggleSettings);
+btnCloseSettings.addEventListener('click', toggleSettings);
+document.addEventListener('keydown', toggleSettings);
+
+workDurationInput.addEventListener("change", () => {
+   workDuration = parseInt(workDurationInput.value) * 60;
+   if (isWorking) {
+      remainingTime = workDuration;
+      updateProgress();
+   }
+});
+
+restDurationInput.addEventListener("change", () => {
+   restDuration = parseInt(restDurationInput.value) * 60;
+   if (!isWorking) {
+      remainingTime = restDuration;
+      updateProgress();
+   }
+});
+
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+//to do
+// select everything
+// select the todo-form
+const todoForm = document.querySelector('.todo-form');
+// select the input box
+const todoInput = document.querySelector('.todo-input');
+// select the <ul> with class="todo-items"
+const todoItemsList = document.querySelector('.todo-items');
+
+// array which stores every todos
+let todos = [];
+
+// add an eventListener on form, and listen for submit event
+todoForm.addEventListener('submit', function(event) {
+  // prevent the page from reloading when submitting the form
+  event.preventDefault();
+  addTodo(todoInput.value); // call addTodo function with input box current value
+});
+
+// function to add todo
+function addTodo(item) {
+  // if item is not empty
+  if (item !== '') {
+    // make a todo object, which has id, name, and completed properties
+    const todo = {
+      id: Date.now(),
+      name: item,
+      completed: false
+    };
+
+    // then add it to todos array
+    todos.push(todo);
+    addToLocalStorage(todos); // then store it in localStorage
+
+    // finally clear the input box value
+    todoInput.value = '';
+  }
+}
+
+// function to render given todos to screen
+function renderTodos(todos) {
+  // clear everything inside <ul> with class=todo-items
+  todoItemsList.innerHTML = '';
+
+  // run through each item inside todos
+  todos.forEach(function(item) {
+    // check if the item is completed
+    const checked = item.completed ? 'checked': null;
+
+    // make a <li> element and fill it
+    // <li> </li>
+    const li = document.createElement('li');
+    // <li class="item"> </li>
+    li.setAttribute('class', 'item');
+    // <li class="item" data-key="20200708"> </li>
+    li.setAttribute('data-key', item.id);
+    /* <li class="item" data-key="20200708"> 
+          <input type="checkbox" class="checkbox">
+          Go to Gym
+          <button class="delete-button">X</button>
+        </li> */
+    // if item is completed, then add a class to <li> called 'checked', which will add line-through style
+    if (item.completed === true) {
+      li.classList.add('checked');
+    }
+
+    li.innerHTML = `
+      <input type="checkbox" class="checkbox" ${checked}>
+      ${item.name}
+      <button class="delete-button">X</button>
+    `;
+    // finally add the <li> to the <ul>
+    todoItemsList.append(li);
+  });
+
+}
+
+// function to add todos to local storage
+function addToLocalStorage(todos) {
+  // conver the array to string then store it.
+  localStorage.setItem('todos', JSON.stringify(todos));
+  // render them to screen
+  renderTodos(todos);
+}
+
+// function helps to get everything from local storage
+function getFromLocalStorage() {
+  const reference = localStorage.getItem('todos');
+  // if reference exists
+  if (reference) {
+    // converts back to array and store it in todos array
+    todos = JSON.parse(reference);
+    renderTodos(todos);
+  }
+}
+
+// toggle the value to completed and not completed
+function toggle(id) {
+  todos.forEach(function(item) {
+    // use == not ===, because here types are different. One is number and other is string
+    if (item.id == id) {
+      // toggle the value
+      item.completed = !item.completed;
+    }
+  });
+
+  addToLocalStorage(todos);
+}
+
+// deletes a todo from todos array, then updates localstorage and renders updated list to screen
+function deleteTodo(id) {
+  // filters out the <li> with the id and updates the todos array
+  todos = todos.filter(function(item) {
+    // use != not !==, because here types are different. One is number and other is string
+    return item.id != id;
+  });
+
+  // update the localStorage
+  addToLocalStorage(todos);
+}
+
+// initially get everything from localStorage
+getFromLocalStorage();
+
+// after that addEventListener <ul> with class=todoItems. Because we need to listen for click event in all delete-button and checkbox
+todoItemsList.addEventListener('click', function(event) {
+  // check if the event is on checkbox
+  if (event.target.type === 'checkbox') {
+    // toggle the state
+    toggle(event.target.parentElement.getAttribute('data-key'));
+  }
+
+  // check if that is a delete-button
+  if (event.target.classList.contains('delete-button')) {
+    // get id from data-key attribute's value of parent <li> where the delete-button is present
+    deleteTodo(event.target.parentElement.getAttribute('data-key'));
+  }
+});
+
+
+
+
+
+
+const audioPlayer = document.querySelector(".audio-player");
+const audio = new Audio(
+  "rain.mp3"
+);
+//credit for audio: https://www.youtube.com/watch?v=VfqQrVbNjXc epicdemic ambience
+
+console.dir(audio);
+
+audio.addEventListener(
+  "loadeddata",
+  () => {
+    audioPlayer.querySelector(".time .length").textContent = getTimeCodeFromNum(
+      audio.duration
+    );
+    audio.volume = .75;
+  },
+  false
+);
+
+//click on timeline to skip around
+const timeline = audioPlayer.querySelector(".timeline");
+timeline.addEventListener("click", e => {
+  const timelineWidth = window.getComputedStyle(timeline).width;
+  const timeToSeek = e.offsetX / parseInt(timelineWidth) * audio.duration;
+  audio.currentTime = timeToSeek;
+}, false);
+
+//click volume slider to change volume
+const volumeSlider = audioPlayer.querySelector(".controls .volume-slider");
+volumeSlider.addEventListener('click', e => {
+  const sliderWidth = window.getComputedStyle(volumeSlider).width;
+  const newVolume = e.offsetX / parseInt(sliderWidth);
+  audio.volume = newVolume;
+  audioPlayer.querySelector(".controls .volume-percentage").style.width = newVolume * 100 + '%';
+}, false)
+
+//check audio percentage and update time accordingly
+setInterval(() => {
+  const progressBar = audioPlayer.querySelector(".progress");
+  progressBar.style.width = audio.currentTime / audio.duration * 100 + "%";
+  audioPlayer.querySelector(".time .current").textContent = getTimeCodeFromNum(
+    audio.currentTime
+  );
+}, 500);
+
+//toggle between playing and pausing on button click
+const playBtn = audioPlayer.querySelector(".controls .toggle-play");
+playBtn.addEventListener(
+  "click",
+  () => {
+    if (audio.paused) {
+      playBtn.classList.remove("play");
+      playBtn.classList.add("pause");
+      audio.play();
+    } else {
+      playBtn.classList.remove("pause");
+      playBtn.classList.add("play");
+      audio.pause();
+    }
+  },
+  false
+);
+
+audioPlayer.querySelector(".volume-button").addEventListener("click", () => {
+  const volumeEl = audioPlayer.querySelector(".volume-container .volume");
+  audio.muted = !audio.muted;
+  if (audio.muted) {
+    volumeEl.classList.remove("icono-volumeMedium");
+    volumeEl.classList.add("icono-volumeMute");
+  } else {
+    volumeEl.classList.add("icono-volumeMedium");
+    volumeEl.classList.remove("icono-volumeMute");
+  }
+});
+
+//turn 128 seconds into 2:08
+function getTimeCodeFromNum(num) {
+  let seconds = parseInt(num);
+  let minutes = parseInt(seconds / 60);
+  seconds -= minutes * 60;
+  const hours = parseInt(minutes / 60);
+  minutes -= hours * 60;
+
+  if (hours === 0) return `${minutes}:${String(seconds % 60).padStart(2, 0)}`;
+  return `${String(hours).padStart(2, 0)}:${minutes}:${String(
+    seconds % 60
+  ).padStart(2, 0)}`;
+}
+
+audio.addEventListener('ended', function() {
+  this.currentTime = 0;
+  this.play();
+}, false);
+
+
+
+
+const audioPlayer2 = document.querySelector(".audio-player2");
+const audio2 = new Audio(
+  "belofi.mp3"
+);
+//credit for audio: https://www.youtube.com/watch?v=a0RxEHF594I demongummies
+
+console.dir(audio2);
+
+audio2.addEventListener(
+  "loadeddata",
+  () => {
+    audioPlayer2.querySelector(".time2 .length2").textContent = getTimeCodeFromNum(
+      audio2.duration
+    );
+    audio2.volume = .75;
+  },
+  false
+);
+
+//click on timeline to skip around
+const timeline2 = audioPlayer2.querySelector(".timeline2");
+timeline2.addEventListener("click", e => {
+  const timeline2Width = window.getComputedStyle(timeline2).width;
+  const timeToSeek = e.offsetX / parseInt(timeline2Width) * audio2.duration;
+  audio2.currentTime = timeToSeek;
+}, false);
+
+//click volume slider to change volume
+const volumeSlider2 = audioPlayer2.querySelector(".controls2 .volume-slider2");
+volumeSlider2.addEventListener('click', e => {
+  const slider2Width = window.getComputedStyle(volumeSlider2).width;
+  const newVolume = e.offsetX / parseInt(slider2Width);
+  audio2.volume = newVolume;
+  audioPlayer2.querySelector(".controls2 .volume-percentage2").style.width = newVolume * 100 + '%';
+}, false)
+
+//check audio percentage and update time accordingly
+setInterval(() => {
+  const progressBar2 = audioPlayer2.querySelector(".progress2");
+  progressBar2.style.width = audio2.currentTime / audio2.duration * 100 + "%";
+  audioPlayer2.querySelector(".time2 .current2").textContent = getTimeCodeFromNum(
+    audio2.currentTime
+  );
+}, 500);
+
+//toggle between playing and pausing on button click
+const playBtn2 = audioPlayer2.querySelector(".controls2 .toggle-play2");
+playBtn2.addEventListener(
+  "click",
+  () => {
+    if (audio2.paused) {
+      playBtn2.classList.remove("play2");
+      playBtn2.classList.add("pause");
+      audio2.play();
+    } else {
+      playBtn2.classList.remove("pause");
+      playBtn2.classList.add("play2");
+      audio2.pause();
+    }
+  },
+  false
+);
+
+audioPlayer2.querySelector(".volume-button2").addEventListener("click", () => {
+  const volumeEl = audioPlayer2.querySelector(".volume-container2 .volume");
+  audio2.muted = !audio2.muted;
+  if (audio2.muted) {
+    volumeEl.classList.remove("icono-volumeMedium");
+    volumeEl.classList.add("icono-volumeMute");
+  } else {
+    volumeEl.classList.add("icono-volumeMedium");
+    volumeEl.classList.remove("icono-volumeMute");
+  }
+});
+
+//turn format from 128 seconds into 2:08
+function getTimeCodeFromNum(num) {
+  let seconds = parseInt(num);
+  let minutes = parseInt(seconds / 60);
+  seconds -= minutes * 60;
+  const hours = parseInt(minutes / 60);
+  minutes -= hours * 60;
+
+  if (hours === 0) return `${minutes}:${String(seconds % 60).padStart(2, 0)}`;
+  return `${String(hours).padStart(2, 0)}:${minutes}:${String(
+    seconds % 60
+  ).padStart(2, 0)}`;
+}
+
+audio2.addEventListener('ended', function() {
+  this.currentTime = 0;
+  this.play();
+}, false);
+
+ 
+   </script>
+</body>
+</html>
