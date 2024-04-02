@@ -1,0 +1,140 @@
+body {
+    background-image: url("IMG_1287.PNG");
+    background-size: auto;
+    overflow: hidden;
+}
+
+.parent {
+    position: absolute;
+  top: 25px;
+  left: 0;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.coverAnimals {
+    display:block;
+    margin:auto;
+    width: 73%;
+    -webkit-animation:spin 20s linear infinite;
+    -moz-animation:spin 20s linear infinite;
+    animation:spin 20s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.starsBottom {
+    position: absolute;
+  top: -50px;
+  left: 250px;
+  bottom: 0px;
+  right: 10px;
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: flex; 
+  justify-content:center;
+
+  animation: shakeY; 
+  animation-duration: 20s; 
+  animation-iteration-count: infinite;
+}
+
+.starsTop {
+    position: absolute;
+  top: -10px;
+  left: -250px;
+  bottom: 0px;
+  right: -10px;
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: flex; 
+  justify-content:center;
+
+
+  animation: shakeY;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-direction:reverse;
+}
+
+.myTime {
+  font-family:gaegu;
+    position: absolute;
+  top: 42%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #000000; 
+  color: #fff; 
+  border: 5px solid #000000;
+  padding: 5px 30px 5px 30px;
+  font-weight: bold;
+  font-size: 38px; 
+  border-radius: 0.75em;
+  text-align: center;
+  
+}
+
+#startButton {
+  font-family:gaegu;
+    position: absolute;
+  top: 55%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #000000; 
+  color: #fff; 
+  border: 5px solid #000000;
+  padding: 5px 30px 5px 30px;
+  font-weight: bold;
+  font-size: 32px;  
+  border-radius: 0.75em;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+
+#startButton:hover {
+    color: black !important;
+    background: #fff6fe;
+    animation-duration: 0.1s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
